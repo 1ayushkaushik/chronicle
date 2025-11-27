@@ -83,6 +83,7 @@ body {
   margin-bottom: 2rem;
 }
 
+/* ProseMirror Editor Styles */
 .editor-wrapper {
   position: relative;
   background: #ffffff;
@@ -91,32 +92,175 @@ body {
   overflow: hidden;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  min-height: 400px;
 }
 
-.editor-wrapper:focus-within {
+.editor-wrapper:focus-within,
+.editor-wrapper.editor-focused {
   border-color: #667eea;
   box-shadow: 
     0 0 0 3px rgba(102, 126, 234, 0.1),
     0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.editor-textarea {
-  width: 100%;
-  min-height: 300px;
+.prosemirror-container {
+  min-height: 350px;
   padding: 1.5rem;
-  border: none;
-  outline: none;
-  resize: vertical;
+}
+
+/* Main ProseMirror Editor */
+.prosemirror-editor {
+  outline: none !important;
+  border: none !important;
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: #2c3e50;
   background: transparent;
+  min-height: 300px;
+  width: 100%;
 }
 
-.editor-textarea::placeholder {
+/* Paragraph styles */
+.prosemirror-editor p {
+  margin: 0 0 16px 0;
+  padding: 0;
+  min-height: 1.6em;
+}
+
+.prosemirror-editor p:last-child {
+  margin-bottom: 0;
+}
+
+/* Placeholder */
+.prosemirror-editor.ProseMirror-focused:empty::before,
+.prosemirror-editor:empty::before {
+  content: attr(data-placeholder);
   color: #a0a0a0;
+  pointer-events: none;
   font-style: italic;
+  position: absolute;
+}
+
+/* Headings */
+.prosemirror-editor h1 {
+  font-size: 2.5em;
+  font-weight: 700;
+  margin: 32px 0 20px 0;
+  color: #1a202c;
+  line-height: 1.2;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.prosemirror-editor h2 {
+  font-size: 2em;
+  font-weight: 600;
+  margin: 28px 0 16px 0;
+  color: #1a202c;
+  line-height: 1.3;
+  border-bottom: 2px solid #764ba2;
+  padding-bottom: 8px;
+}
+
+.prosemirror-editor h3 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 24px 0 12px 0;
+  color: #1a202c;
+  line-height: 1.4;
+}
+
+/* Text formatting */
+.prosemirror-editor strong {
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.prosemirror-editor em {
+  font-style: italic;
+  color: #4a5568;
+}
+
+/* Lists */
+.prosemirror-editor ul, .prosemirror-editor ol {
+  padding-left: 28px;
+  margin: 16px 0;
+}
+
+.prosemirror-editor li {
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+.prosemirror-editor ul li {
+  list-style-type: disc;
+}
+
+.prosemirror-editor ol li {
+  list-style-type: decimal;
+}
+
+/* Code */
+.prosemirror-editor code {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #667eea;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.prosemirror-editor pre {
+  background: rgba(45, 55, 72, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  margin: 20px 0;
+  overflow-x: auto;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+.prosemirror-editor pre code {
+  background: transparent;
+  padding: 0;
+  color: #2d3748;
+  border: none;
+}
+
+/* Blockquotes */
+.prosemirror-editor blockquote {
+  border-left: 4px solid #667eea;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #4a5568;
+  font-style: italic;
+  background: rgba(102, 126, 234, 0.05);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Selection */
+.prosemirror-editor .ProseMirror-selectednode {
+  outline: 2px solid #667eea;
+  border-radius: 4px;
+  background: rgba(102, 126, 234, 0.1);
+}
+
+/* Loading state */
+.editor-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #667eea;
+  font-size: 14px;
+  z-index: 10;
 }
 
 .controls-section {
@@ -266,8 +410,12 @@ body {
     padding: 1rem;
   }
   
-  .editor-textarea {
+  .prosemirror-container {
     padding: 1rem;
     min-height: 250px;
+  }
+  
+  .prosemirror-editor {
+    font-size: 16px; /* Prevent zoom on iOS */
   }
 }
